@@ -1,0 +1,44 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" th:href="@{/css/index.css}">
+
+</head>
+<body>
+    <div id="wrap">
+        <div id="titleBox">
+            <p>게시글 보기</p>
+        </div>
+
+        <div id="contentBox">
+            <table id="viewTable">
+                <tr>
+                    <td>번호</td>
+                    <td>[[${article.articleNo}]]</td>
+                    <td>제목</td>
+                    <td>[[${article.title}]]</td>
+                </tr>
+                <tr>
+                    <td>작성자</td>
+                    <td>[[${article.writer}]]</td>
+                    <td>날짜</td>
+                    <td>[[${article.rDate}]]</td>
+                </tr>
+                <tr>
+                    <td colspan="4">
+                        <textarea readonly>[[${article.contents}]]</textarea>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <div id="btnBox">
+            <a th:href="@{/}" class="btn3 br">뒤로</a>
+            <a th:href="@{'/modify/'+${article.articleNo}}" class="btn3 bg">수정</a>
+        </div>
+
+    </div>
+</body>
+</html>

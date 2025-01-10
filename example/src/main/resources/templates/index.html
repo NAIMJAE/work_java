@@ -1,0 +1,60 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" th:href="@{/css/index.css}">
+</head>
+<body>
+    <div id="wrap">
+        <div id="titleBox">
+            <p>게시판 목록</p>
+        </div>
+
+        <div id="contentBox">
+            <table id="listTable">
+                <tr>
+                    <td>번호</td>
+                    <td>제목</td>
+                    <td>내용</td>
+                    <td>작성자</td>
+                    <td></td>
+                </tr>
+                <tr th:each="list :${articleList}">
+                    <td th:text="${list.articleNo}"></td>
+                    <td><a th:href="@{'/view/'+${list.articleNo}}" th:text="${list.title}"></a></td>
+                    <td th:text="${list.contents}"></td>
+                    <td th:text="${list.writer}"></td>
+                    <td>
+                        <button class="btn1 br" th:onclick="'deleteArticle(' + ${list.articleNo} + ')'">삭제</button>
+                        <a th:href="@{'/modify/'+${list.articleNo}}" class="btn3 bg" >수정</a>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        
+        <div id="btnBox">
+            <a th:href="@{/write}" class="btn3 bg">글쓰기</a>
+        </div>
+    </div>
+
+    <script>
+        function deleteArticle(articleNo) {
+            if (confirm("정말 삭제하시겠습니까?")) {
+                fetch(`/example/delete/${articleNo}`, {
+                    method: "DELETE",
+                })
+                .then(response => {
+                    if (response.ok) {
+                        alert("삭제가 완료되었습니다.");
+                        location.reload();
+                    } else {
+                        alert("삭제에 실패했습니다.");
+                    }
+                })
+                .catch(err => console.error(err));
+            }
+        }
+    </script>
+</body>
+</html>

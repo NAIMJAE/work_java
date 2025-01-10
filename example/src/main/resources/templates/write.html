@@ -1,0 +1,87 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" th:href="@{/css/index.css}">
+</head>
+<body>
+    <div id="wrap">
+        <div id="titleBox">
+            <p>게시글 작성</p>
+        </div>
+
+        <div id="contentBox">
+            <table id="writeTable">
+                <tr>
+                    <td>제목</td>
+                    <td><input type="text" name="title"></td>
+                </tr>
+                <tr>
+                    <td>작성자</td>
+                    <td><input type="text" name="writer"></td>
+                </tr>
+                <tr>
+                    <td>내용</td>
+                    <td><textarea name="contents" id=""></textarea></td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        <a th:href="@{/}" class="btn3">취소</a>
+                        <button class="btn5" onclick=writeArticle()>작성</button>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        function writeArticle() {
+            const title = window.document.getElementsByName("title")[0].value;
+            const writer = window.document.getElementsByName("writer")[0].value;
+            const contents = window.document.getElementsByName("contents")[0].value;
+
+            if (title.length == 0 || title.length == 0 || writer.length == 0) {
+                alert("제목과 내용을 작성해주세요.");
+                return;
+            }
+            if(title.length > 20 || contents.length > 20 ) {
+                alert("제목과 내용을 20자를 초과할 수 없습니다.");
+                return;
+            }
+
+            if(title != null && writer != null && contents != null) {
+                let ans = confirm("게시글을 작성하시겠습니까?");
+
+                const data = {
+                    "title": title,
+                    "contents": contents,
+                    "writer": writer
+                }
+                console.log("data : ",data);
+
+                if (ans) {
+                    fetch(`/example/write`, {
+                        method: "POST",
+                        headers: {"Content-Type": "application/json",},
+                        body: JSON.stringify(data),
+                    })
+                    .then(response => {
+                        if (response.ok) {
+                            return response.json();
+                        }
+                    })
+                    .then(result => {
+                        alert("게시글이 작성되었습니다.");
+                        location.href = `/example/`;
+                    })
+                    .catch(err => console.log(err))
+                }
+
+            }else {
+                alert("모든 항목을 작성해주세요.");
+            }
+        }
+    </script>
+</body>
+</html>
